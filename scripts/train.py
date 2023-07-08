@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import loguru
+from tqdm.auto import tqdm
 import pytorch_lightning as pl
 from torch.utils.data import DataLoader
 from pytorch_lightning.loggers import WandbLogger
@@ -21,6 +22,9 @@ def main():
         part="train",
         image_transforms=ConstantNormalization(),
     )
+    for i in tqdm(range(len(train_dataset))):
+        x = train_dataset[i]
+
     train_dataloader = DataLoader(train_dataset, batch_size=2, collate_fn=collate_fn)
 
     pl_module = BaseLightningModule(

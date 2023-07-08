@@ -95,7 +95,6 @@ class TorchInstanceSegmentationDataset(BaseHuBMAPDataset, BaseSegmentationDatase
         boxes = torch.Tensor(boxes)
         try:
             area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
-        except Exception:
-            area = [0]
-
-        return boxes, torch.Tensor(area)
+        except IndexError:
+            area = torch.Tensor([])
+        return boxes, area
