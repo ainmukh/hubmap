@@ -1,0 +1,9 @@
+__pycache__/
+.DS_Store
+.idea/
+
+notebooks/
+data/
+venv/
+lightning_logs/
+wandb/

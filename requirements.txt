@@ -1,0 +1,11 @@
+torch~=1.13.0
+transformers
+pandas
+opencv-python
+pillow
+loguru
+matplotlib
+pytorch-lightning
+scipy
+wandb
+torchvision~=0.14.0
