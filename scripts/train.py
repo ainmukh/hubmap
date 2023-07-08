@@ -22,8 +22,6 @@ def main():
         part="train",
         image_transforms=ConstantNormalization(),
     )
-    for i in tqdm(range(len(train_dataset))):
-        x = train_dataset[i]
 
     train_dataloader = DataLoader(train_dataset, batch_size=2, collate_fn=collate_fn)
 
