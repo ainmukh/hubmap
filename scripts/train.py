@@ -33,7 +33,7 @@ def main():
         name="some_name"
     )
 
-    trainer = pl.Trainer(max_epochs=25, logger=wandb_logger)
+    trainer = pl.Trainer(max_epochs=25, logger=wandb_logger, log_every_n_steps=50)
     trainer.fit(pl_module, train_dataloaders=train_dataloader)
 
 

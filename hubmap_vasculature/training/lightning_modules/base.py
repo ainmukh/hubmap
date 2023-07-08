@@ -30,6 +30,7 @@ class BaseLightningModule(pl.LightningModule):
 
     def training_step(self, batch: Dict[str, Tensor], batch_idx: int) -> torch.Tensor:
         loss_dict = self.forward(batch)
+        self._log_dict(loss_dict)
         return sum(loss_dict.values())
 
     def configure_optimizers(self) -> torch.optim.Optimizer:
@@ -37,3 +38,7 @@ class BaseLightningModule(pl.LightningModule):
             list(self.parameters()),
             lr=self.lr
         )
+
+    def _log_loss_dict(self, dictionary: Dict[str, Any]):
+        for field, loss in dictionary.items():
+            self.log(field, loss)
