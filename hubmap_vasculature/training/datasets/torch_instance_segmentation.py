@@ -12,6 +12,7 @@ from .utils import BatchFields
 class TorchInstanceSegmentationDataset(BaseHuBMAPDataset, BaseSegmentationDataset):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._filter_empty_masks()
 
     def __getitem__(self, index: int) -> Dict[str, Any]:
         item = {BatchFields.IMAGE_ID: self.ids[index]}
@@ -93,8 +94,18 @@ class TorchInstanceSegmentationDataset(BaseHuBMAPDataset, BaseSegmentationDatase
                 np.max(mask[1]), np.max(mask[0]),
             ])
         boxes = torch.Tensor(boxes)
-        if boxes.size(0) > 0:
-            area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
-        else:
-            area = torch.Tensor([])
+
+        area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+
         return boxes, area
+
+    def _filter_empty_masks(self):
+        valid_ids = []
+        for image_id in self.ids:
+            image = self._get_image(image_id)
+            masks = self._get_masks(image_id, image)
+            if masks.size(0) > 0:
+                valid_ids.append(image_id)
+        diff = len(self.ids) - len(valid_ids)
+        loguru.logger.debug(f"Dropped {diff} images without target items")
+        self.ids = valid_ids
