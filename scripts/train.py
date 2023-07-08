@@ -22,7 +22,6 @@ def main():
         part="train",
         image_transforms=ConstantNormalization(),
     )
-
     train_dataloader = DataLoader(train_dataset, batch_size=2, collate_fn=collate_fn)
 
     pl_module = BaseLightningModule(

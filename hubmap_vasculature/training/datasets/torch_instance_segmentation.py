@@ -93,8 +93,8 @@ class TorchInstanceSegmentationDataset(BaseHuBMAPDataset, BaseSegmentationDatase
                 np.max(mask[1]), np.max(mask[0]),
             ])
         boxes = torch.Tensor(boxes)
-        try:
+        if boxes.size(0) > 0:
             area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
-        except IndexError:
+        else:
             area = torch.Tensor([])
         return boxes, area
