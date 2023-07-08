@@ -39,6 +39,6 @@ class BaseLightningModule(pl.LightningModule):
             lr=self.lr
         )
 
-    def _log_loss_dict(self, dictionary: Dict[str, Any]):
+    def _log_dict(self, dictionary: Dict[str, Any]):
         for field, loss in dictionary.items():
             self.log(field, loss)
